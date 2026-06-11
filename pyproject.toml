@@ -1,0 +1,13 @@
+[project]
+name = "astramugen"
+version = "0.1.0"
+description = "3D solar system simulator"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=9.0.3",
+    "ursina>=7.0.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
