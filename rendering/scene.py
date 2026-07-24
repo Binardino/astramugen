@@ -41,6 +41,7 @@ class Scene:
         self._register(body)
 
     def remove_body(self, body):
+        """Destroy a body's Ursina entities and remove it from the system."""
         key = id(body)
         renderer = self._renderers.pop(key, None)
         if renderer is not None:
