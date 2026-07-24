@@ -22,6 +22,7 @@ from rendering.bodies.star_renderer import StarRenderer
 from rendering.bodies.planet_renderer import PlanetRenderer
 from rendering.effects.grid import GridEffect
 from rendering.effects.orbit_line import OrbitLine
+from rendering.scene import Scene
 
 app = Ursina()
 window.color = color.black
@@ -31,24 +32,34 @@ system = SolarSystem()
 star = Star(name="Sol", radius=2.0, color=(1.0, 0.85, 0.2))
 system.add(star)
 
-orbit = KeplerOrbit(semi_major_axis=8.0, speed=0.8)
-planet = Planet(name="Earth", radius=0.9, color=(0.2, 0.5, 1.0), orbit=orbit)
-system.add(planet)
+# -- Defining Planet --
+# Each tuple: (name, orbital radius, orbital speed, visual size, color)
+planet_data = [
+    ("Mercury", 5.0, 1.5, 0.5, (0.8, 0.6, 0.3)),
+    ("Venus",   7.0, 1.1, 0.8, (0.9, 0.7, 0.4)),
+    ("Earth",   9.0, 0.8, 0.9, (0.2, 0.5, 1.0)),
+    ("Mars",   13.0, 0.5, 0.7, (0.9, 0.3, 0.2)),
+]
+
+for name, radius, speed, size, planet_colour in planet_data:
+    orbit = KeplerOrbit(semi_major_axis=radius, speed=speed)
+    planet = Planet(name=name, radius=size, color=planet_colour, orbit=orbit)
+    system.add(planet)
 
 # --- Rendering setup ---
-star_renderer = StarRenderer(star)
-planet_renderer = PlanetRenderer(planet)
-orbit_line = OrbitLine(orbit.semi_major_axis)
-grid = GridEffect()
+scene = Scene(system)
 
 # EditorCamera: right-click drag to orbit, scroll to zoom
-EditorCamera()
+editor_camera = EditorCamera()
+editor_camera.rotation_x = 50  # camera tilt, ~50° from horizontal view
+editor_camera.position = (0, 15, -20)
+
 
 
 def update():
     """Called by Ursina every frame. Advances simulation, then syncs renderers."""
     system.tick(time.dt)
-    planet_renderer.sync()
+    scene.sync()
 
 
 app.run()
