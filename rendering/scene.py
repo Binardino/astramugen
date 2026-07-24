@@ -36,6 +36,7 @@ class Scene:
             self._orbit_lines[id(body)] = OrbitLine(body.orbit.semi_major_axis)
 
     def add_body(self, body):
+        """Add a body to the system and create its renderer."""
         self.system.add(body)
         self._register(body)
 
