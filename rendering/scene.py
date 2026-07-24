@@ -52,6 +52,7 @@ class Scene:
         self.system.remove(body)
 
     def sync(self):
+        """Update every renderer and orbit line to match current simulation state. Called each frame."""
         for renderer in self._renderers.values():
             renderer.sync()
         for key, value in self._orbit_lines.items():
