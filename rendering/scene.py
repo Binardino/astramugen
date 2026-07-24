@@ -1,3 +1,11 @@
+"""
+Scene — orchestrates all renderers for a SolarSystem.
+
+Registers a renderer (and orbit line, for planets) for each body in the
+system, and keeps them in sync with the simulation state every frame.
+Belongs to the rendering layer: reads simulation state, never writes it.
+"""
+
 from simulation.bodies.star import Star
 from simulation.bodies.planet import Planet
 from rendering.bodies.star_renderer import StarRenderer
@@ -5,12 +13,16 @@ from rendering.bodies.planet_renderer import PlanetRenderer
 from rendering.effects.orbit_line import OrbitLine
 from rendering.effects.grid import GridEffect
 from ursina import destroy
+
+
 class Scene:
+    """Owns and syncs one renderer per body in a SolarSystem, plus the background grid."""
+
     def __init__(self, system):
         self.system = system
-        self._renderers   = {}
+        self._renderers = {}
         self._orbit_lines = {}
-        self.grid         = GridEffect()
+        self.grid = GridEffect()
         for body in self.system.bodies:
             self._register(body)
 
@@ -27,8 +39,13 @@ class Scene:
         self._register(body)
 
     def remove_body(self, body):
-        self.destroy(body)
-        self.pop(body)
+        key = id(body)
+        renderer = self._renderers.pop(key, None)
+        if renderer is not None:
+            destroy(renderer.entity)
+        orbit_line = self._orbit_lines.pop(key, None)
+        if orbit_line is not None:
+            destroy(orbit_line.entity)
         self.system.remove(body)
 
     def sync(self):
