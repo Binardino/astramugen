@@ -27,9 +27,10 @@ class Scene:
             self._register(body)
 
     def _register(self, body):
+        """Create and store the renderer (and orbit line, for planets) for a single body."""
         if isinstance(body, Star):
             self._renderers[id(body)] = StarRenderer(body)
-        
+
         if isinstance(body, Planet):
             self._renderers[id(body)] = PlanetRenderer(body)
             self._orbit_lines[id(body)] = OrbitLine(body.orbit.semi_major_axis)
