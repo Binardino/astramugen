@@ -20,6 +20,7 @@ from simulation.system import SolarSystem
 from rendering.effects.orbit_line import OrbitLine
 from rendering.scene import Scene
 from rendering.camera import CameraController
+from ui.panels.time_panel import TimePanel
 
 app = Ursina()
 window.color = color.black
@@ -49,9 +50,11 @@ scene = Scene(system)
 # EditorCamera: right-click drag to orbit, scroll to zoom
 camera = CameraController()
 
+time_panel = TimePanel()
+
 def update():
     """Called by Ursina every frame. Advances simulation, then syncs renderers."""
-    system.tick(time.dt)
+    system.tick(time.dt * time_panel.time_scale)
     scene.sync()
 
 
