@@ -12,17 +12,14 @@ Layer contract:
   - main.py is the only place that connects the two
 """
 from ursina import Ursina, color, time, window
-from ursina.prefabs.editor_camera import EditorCamera
 
 from simulation.bodies.star import Star
 from simulation.bodies.planet import Planet
 from simulation.physics.kepler import KeplerOrbit
 from simulation.system import SolarSystem
-from rendering.bodies.star_renderer import StarRenderer
-from rendering.bodies.planet_renderer import PlanetRenderer
-from rendering.effects.grid import GridEffect
 from rendering.effects.orbit_line import OrbitLine
 from rendering.scene import Scene
+from rendering.camera import CameraController
 
 app = Ursina()
 window.color = color.black
@@ -50,11 +47,7 @@ for name, radius, speed, size, planet_colour in planet_data:
 scene = Scene(system)
 
 # EditorCamera: right-click drag to orbit, scroll to zoom
-editor_camera = EditorCamera()
-editor_camera.rotation_x = 50  # camera tilt, ~50° from horizontal view
-editor_camera.position = (0, 15, -20)
-
-
+camera = CameraController()
 
 def update():
     """Called by Ursina every frame. Advances simulation, then syncs renderers."""
