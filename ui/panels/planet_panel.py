@@ -54,9 +54,12 @@ class _PlanetRow:
     def _apply(self) -> None:
         """Write current slider values back onto the bound planet.
 
-        Not yet implemented — currently a no-op stub.
+        Called automatically when any of this row's three sliders
+        finishes a drag (see the `on_value_changed` wiring in `__init__`).
         """
-        return None
+        self.planet.radius                = self._size_slider.value
+        self.planet.orbit.speed           = self._speed_slider.value
+        self.planet.orbit.semi_major_axis = self._radius_slider.value
 
     def destroy(self) -> None:
         """Destroy this row's slider widgets.
