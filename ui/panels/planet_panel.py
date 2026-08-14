@@ -2,8 +2,8 @@
 
 from ursina import Slider, Text, color, destroy
 from simulation.bodies.planet import Planet
-
-
+from ui.panels.planet_defaults import PLANET_DEFAULTS
+from simulation.physics.kepler import KeplerOrbit
 class _PlanetRow:
     """One row of sliders controlling a single planet's orbit and size.
 
@@ -66,3 +66,60 @@ class _PlanetRow:
         destroy(self._radius_slider)
         destroy(self._speed_slider)
         destroy(self._size_slider)
+
+class PlanetPanel:
+    """Dashboard panel managing the planet count slider and per-planet rows.
+
+    `_planets` and `_rows` are kept in sync by index: `_planets[i]` is
+    the planet controlled by `_rows[i]`.
+    """
+
+    def __init__(self, scene, planet_range):
+        """Create the count slider and populate the initial planets.
+
+        Args:
+            scene: The Scene to add/remove planet bodies through.
+            planet_range: Initial number of planets to create
+                (must be between 1 and len(PLANET_DEFAULTS)).
+        """
+        self.scene = scene
+        self._planets = []
+        self._rows = []
+
+        self._count_slider = Slider(
+            min=1, max=len(PLANET_DEFAULTS), default=planet_range, step=1,
+            text='planet count',
+            position=(-0.6, 0.35),
+        )
+        self._count_slider.on_value_changed = self._on_count_changed
+
+        for _ in range(planet_range):
+            self._add_planet()
+
+    def _add_planet(self):
+        """Create and register the next planet from PLANET_DEFAULTS.
+
+        Adds the planet to the scene (which creates its renderer and
+        orbit line) and creates a matching _PlanetRow for dashboard control.
+        """
+        index = len(self._planets)
+        name, orbital_radius, speed, size, planet_color = PLANET_DEFAULTS[index]
+        orbit = KeplerOrbit(semi_major_axis=orbital_radius, speed=speed)
+        planet = Planet(name=name, radius=size, color=planet_color, orbit=orbit)
+        self.scene.add_body(planet)
+        self._planets.append(planet)
+        self._rows.append(_PlanetRow(planet, index))
+
+    def _remove_last(self):
+        """Remove the last planet and destroy its dashboard row.
+
+        Not yet implemented — currently a no-op stub.
+        """
+        return None
+
+    def _on_count_changed(self):
+        """Add or remove planets to match the count slider's new value.
+
+        Not yet implemented — currently a no-op stub.
+        """
+        return None
