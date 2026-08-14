@@ -62,8 +62,7 @@ class _PlanetRow:
         self.planet.orbit.semi_major_axis = self._radius_slider.value
 
     def destroy(self) -> None:
-        """Destroy this row's slider widgets.
-
-        Not yet implemented — currently a no-op stub.
-        """
-        return None
+        """Destroy this row's slider widgets, removing them from the UI."""
+        destroy(self._radius_slider)
+        destroy(self._speed_slider)
+        destroy(self._size_slider)
