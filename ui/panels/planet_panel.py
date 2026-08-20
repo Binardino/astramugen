@@ -126,6 +126,14 @@ class PlanetPanel:
     def _on_count_changed(self):
         """Add or remove planets to match the count slider's new value.
 
-        Not yet implemented — currently a no-op stub.
+        Called automatically when the count slider finishes a drag (see
+        the `on_value_changed` wiring in `__init__`).
         """
-        return None
+        slider_value = int(self._count_slider.value)
+        # Only one of these two loops actually runs per call, depending
+        # on whether the slider moved up or down.
+        while len(self._planets) < slider_value :
+            self._add_planet()
+
+        while len(self._planets) > slider_value :
+            self._remove_last()
