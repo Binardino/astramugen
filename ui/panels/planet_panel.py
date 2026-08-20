@@ -113,9 +113,15 @@ class PlanetPanel:
     def _remove_last(self):
         """Remove the last planet and destroy its dashboard row.
 
-        Not yet implemented — currently a no-op stub.
+        Mirrors `_add_planet`: pops the last entries off `_rows` and
+        `_planets` (kept in sync by index) and tears each of them down.
         """
-        return None
+        # list.pop() removes and returns the last element in one step,
+        # so we hold the row/planet to destroy instead of losing it.
+        row = self._rows.pop()
+        row.destroy()
+        planet = self._planets.pop()
+        self.scene.remove_body(planet)
 
     def _on_count_changed(self):
         """Add or remove planets to match the count slider's new value.
