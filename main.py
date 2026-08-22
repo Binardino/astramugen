@@ -14,13 +14,12 @@ Layer contract:
 from ursina import Ursina, color, time, window
 
 from simulation.bodies.star import Star
-from simulation.bodies.planet import Planet
-from simulation.physics.kepler import KeplerOrbit
 from simulation.system import SolarSystem
 from rendering.effects.orbit_line import OrbitLine
 from rendering.scene import Scene
 from rendering.camera import CameraController
 from ui.panels.time_panel import TimePanel
+from ui.panels.planet_panel import PlanetPanel
 
 app = Ursina()
 window.color = color.black
@@ -30,22 +29,12 @@ system = SolarSystem()
 star = Star(name="Sol", radius=2.0, color=(1.0, 0.85, 0.2))
 system.add(star)
 
-# -- Defining Planet --
-# Each tuple: (name, orbital radius, orbital speed, visual size, color)
-planet_data = [
-    ("Mercury", 5.0, 1.5, 0.5, (0.8, 0.6, 0.3)),
-    ("Venus",   7.0, 1.1, 0.8, (0.9, 0.7, 0.4)),
-    ("Earth",   9.0, 0.8, 0.9, (0.2, 0.5, 1.0)),
-    ("Mars",   13.0, 0.5, 0.7, (0.9, 0.3, 0.2)),
-]
-
-for name, radius, speed, size, planet_colour in planet_data:
-    orbit = KeplerOrbit(semi_major_axis=radius, speed=speed)
-    planet = Planet(name=name, radius=size, color=planet_colour, orbit=orbit)
-    system.add(planet)
-
 # --- Rendering setup ---
 scene = Scene(system)
+
+# PlanetPanel builds the dashboard sliders AND creates the initial
+# `planet_range` planets (from PLANET_DEFAULTS) into `scene` on construction.
+planet_panel = PlanetPanel(scene, planet_range=4)
 
 # EditorCamera: right-click drag to orbit, scroll to zoom
 camera = CameraController()
