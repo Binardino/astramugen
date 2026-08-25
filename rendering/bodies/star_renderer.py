@@ -29,15 +29,26 @@ class StarRenderer:
             position = Vec3(0, 0, 0),
             unlit    = True,  # flat color, no lighting wash-out
         )
-        self._glow = Entity(
+        # Two concentric transparent spheres fake a soft bloom: a brighter
+        # tight layer plus a dimmer wide layer, since Ursina has no built-in
+        # glow/bloom shader for unlit primitives.
+        self._glow_inner = Entity(
             model    = 'sphere',
-            color=ucolor.rgba(int(r*255), int(g*255), int(b*255), 40),
-            scale    = star.radius * 2.2,
+            color    = ucolor.Color(r, g, b, 0.47),
+            scale    = star.radius * 1.6,
             position = Vec3(0, 0, 0),
-            unlit    = True, 
+            unlit    = True,
+        )
+        self._glow_outer = Entity(
+            model    = 'sphere',
+            color    = ucolor.Color(r, g, b, 0.18),
+            scale    = star.radius * 3.5,
+            position = Vec3(0, 0, 0),
+            unlit    = True,
         )
 
     def sync(self) -> None:
         """Update entity position to match simulation state. Called each frame by Scene."""
-        self.entity.position = Vec3(*self.star.position)
-        self._glow.position  = Vec3(*self.star.position)
+        self.entity.position      = Vec3(*self.star.position)
+        self._glow_inner.position = Vec3(*self.star.position)
+        self._glow_outer.position = Vec3(*self.star.position)
