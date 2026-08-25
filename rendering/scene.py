@@ -12,6 +12,7 @@ from rendering.bodies.star_renderer import StarRenderer
 from rendering.bodies.planet_renderer import PlanetRenderer
 from rendering.effects.orbit_line import OrbitLine
 from rendering.effects.grid import GridEffect
+from rendering.effects.starfield import Starfield
 from ursina import destroy
 
 
@@ -23,6 +24,7 @@ class Scene:
         self._renderers = {}
         self._orbit_lines = {}
         self.grid = GridEffect()
+        self.starfield = Starfield()
         for body in self.system.bodies:
             self._register(body)
 
