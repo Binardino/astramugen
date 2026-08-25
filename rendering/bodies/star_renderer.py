@@ -29,7 +29,15 @@ class StarRenderer:
             position = Vec3(0, 0, 0),
             unlit    = True,  # flat color, no lighting wash-out
         )
+        self._glow = Entity(
+            model    = 'sphere',
+            color=ucolor.rgba(int(r*255), int(g*255), int(b*255), 40),
+            scale    = star.radius * 2.2,
+            position = Vec3(0, 0, 0),
+            unlit    = True, 
+        )
 
     def sync(self) -> None:
         """Update entity position to match simulation state. Called each frame by Scene."""
         self.entity.position = Vec3(*self.star.position)
+        self._glow.position  = Vec3(*self.star.position)
