@@ -74,3 +74,16 @@ def test_eccentric_orbit_periapsis_at_zero_mean_anomaly():
     r = math.sqrt(x ** 2 + z ** 2)
     # a=10, e=0.5  →  expected periapsis distance = 10 * (1 - 0.5) = 5.0
     assert abs(r - 10.0 * (1 - 0.5)) < 1e-6
+
+
+def test_eccentric_orbit_apoapsis_at_half_turn_mean_anomaly():
+    """At mean anomaly M=π, the body sits at apoapsis: distance = a(1+e).
+
+    Apoapsis is the farthest point from the focus on an ellipse — this is
+    where a real planet moves slowest.
+    """
+    orbit = KeplerOrbit(semi_major_axis=10.0, eccentricity=0.5, speed=1.0)
+    x, y, z = orbit.position_at(math.pi)
+    r = math.sqrt(x ** 2 + z ** 2)
+    # a=10, e=0.5  →  expected apoapsis distance = 10 * (1 + 0.5) = 15.0
+    assert abs(r - 10.0 * (1 + 0.5)) < 1e-6
