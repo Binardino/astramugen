@@ -117,3 +117,16 @@ def test_solver_converges_for_high_eccentricity():
     orbit = KeplerOrbit(semi_major_axis=5.0, eccentricity=0.9, speed=1.0)
     x, y, z = orbit.position_at(1.3)  # arbitrary mean anomaly, just must resolve
     assert math.isfinite(x) and math.isfinite(z)
+
+
+def test_zero_eccentricity_matches_circular_behavior():
+    """With eccentricity=0, Kepler's equation reduces to M = E exactly (no
+    iteration needed), so this must behave exactly like the V1 circular orbit.
+
+    Guards against a bug in the elliptical formula silently breaking the
+    simple case every other test in this project already relies on.
+    """
+    orbit = KeplerOrbit(semi_major_axis=5.0, eccentricity=0.0, speed=1.0)
+    x, y, z = orbit.position_at(math.pi / 2)
+    assert abs(x) < 1e-9
+    assert abs(z - 5.0) < 1e-9
