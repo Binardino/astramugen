@@ -104,3 +104,16 @@ def test_eccentric_orbit_radius_stays_within_periapsis_and_apoapsis():
         x, y, z = orbit.position_at(angle)
         r = math.sqrt(x ** 2 + z ** 2)
         assert periapsis - 1e-6 <= r <= apoapsis + 1e-6
+
+
+def test_solver_converges_for_high_eccentricity():
+    """The Newton-Raphson solver must converge even for a strongly elongated
+    ellipse (e=0.9) instead of hanging or returning NaN/inf.
+
+    This is a numerical robustness check, not a physics check — high
+    eccentricity is where an under-tuned iteration count or tolerance would
+    fail first.
+    """
+    orbit = KeplerOrbit(semi_major_axis=5.0, eccentricity=0.9, speed=1.0)
+    x, y, z = orbit.position_at(1.3)  # arbitrary mean anomaly, just must resolve
+    assert math.isfinite(x) and math.isfinite(z)
