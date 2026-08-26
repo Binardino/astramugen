@@ -61,3 +61,16 @@ def test_advance_speed_scales_time():
     # speed=3, dt=0.5  →  time should be 1.5
     # This is what the time-speed slider in the dashboard will control
     assert abs(orbit.time - 1.5) < 1e-9
+
+
+def test_eccentric_orbit_periapsis_at_zero_mean_anomaly():
+    """At mean anomaly M=0, the body sits at periapsis: distance = a(1-e).
+
+    Periapsis is the closest point to the focus (the star) on an ellipse —
+    this is where a real planet moves fastest.
+    """
+    orbit = KeplerOrbit(semi_major_axis=10.0, eccentricity=0.5, speed=1.0)
+    x, y, z = orbit.position_at(0.0)
+    r = math.sqrt(x ** 2 + z ** 2)
+    # a=10, e=0.5  →  expected periapsis distance = 10 * (1 - 0.5) = 5.0
+    assert abs(r - 10.0 * (1 - 0.5)) < 1e-6
