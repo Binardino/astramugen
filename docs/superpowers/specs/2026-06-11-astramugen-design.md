@@ -167,6 +167,35 @@ class SolarSystem:
 
 ---
 
+## V2 Scope — Detail
+
+**In scope:**
+- Elliptical orbits using the true Kepler equation (mean anomaly → eccentric anomaly via
+  Newton-Raphson → position). Planets speed up near periapsis and slow down near apoapsis,
+  matching Kepler's second law. `eccentricity = 0` reduces exactly to V1's circular case.
+- Moons: each planet gets a fixed, non-configurable set of 0–2 moons defined in code
+  (not yet exposed on the dashboard).
+- Atmosphere/halo effect on planets, reusing the star's fake-bloom technique (a single
+  translucent concentric sphere, more subtle than the star's two-layer version).
+- A "Randomize" button that rerolls existing planet sliders' values within their current
+  min/max ranges.
+
+**Deferred (candidate for a later version, not blocking V2):**
+- Per-planet moon count slider.
+- Toggle between the "real solar system" preset (`PLANET_DEFAULTS` already models this)
+  and an "imaginary randomized system" — needs only a second data source and a small
+  dispatch in `PlanetPanel`, no architecture change.
+- A dedicated `simulation/generation.py` system generator (archetypes, spacing rules)
+  replacing the simple randomizer.
+
+**Out of scope for V2:**
+- Asteroids, comets (V3).
+- Newtonian gravity between bodies — V2's Kepler equation is still a fixed elliptical
+  orbit around one focus, not N-body physics (V5).
+- Any events: supernova, collision (V4).
+
+---
+
 ## Dependencies
 
 - `ursina` — 3D engine + GUI
