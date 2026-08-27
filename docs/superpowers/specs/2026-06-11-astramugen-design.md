@@ -210,6 +210,17 @@ Ideas captured for later, not yet assigned to a version.
   (e.g. Skyfield) rather than hand-rolled Meeus-algorithm math. Only meaningful once the
   "real solar system" mode exists — not before.
 
+- **Real moons for the real-solar-system preset.** When the real/imaginary toggle
+  (deferred above) is built, populate real planets with their real moons — but curated
+  to major moons only, not the full real count. Real moon counts are wildly uneven and
+  mostly tiny/irregular/captured bodies: Jupiter has 95 confirmed moons, Saturn 146+, vs.
+  0 for Mercury/Venus, 1 for Earth, 2 for Mars. Rendering the full count would clutter the
+  low-poly scene for negligible visual payoff. Curated set: the 4 Galilean moons for
+  Jupiter, Titan for Saturn, Triton for Neptune, Phobos + Deimos for Mars, the Moon for
+  Earth. Needs a `MOON_DEFAULTS`-like data source per planet (name, size, color, orbital
+  radius/speed), stylized the same way `PLANET_DEFAULTS` already is — not real
+  astronomical units.
+
 ---
 
 ## Dependencies
