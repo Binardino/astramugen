@@ -35,7 +35,7 @@ class Scene:
 
         if isinstance(body, Planet):
             self._renderers[id(body)] = PlanetRenderer(body)
-            self._orbit_lines[id(body)] = OrbitLine(body.orbit.semi_major_axis)
+            self._orbit_lines[id(body)] = OrbitLine(body.orbit.semi_major_axis, body.orbit.eccentricity)
 
     def add_body(self, body):
         """Add a body to the system and create its renderer."""
@@ -59,4 +59,4 @@ class Scene:
             renderer.sync()
         for key, value in self._orbit_lines.items():
             body = next(body for body in self.system.bodies if id(body) == key)
-            self._orbit_lines[key].update_radius(body.orbit.semi_major_axis)
+            self._orbit_lines[key].update_radius(body.orbit.semi_major_axis, body.orbit.eccentricity)
