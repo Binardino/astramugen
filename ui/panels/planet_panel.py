@@ -103,8 +103,8 @@ class PlanetPanel:
         orbit line) and creates a matching _PlanetRow for dashboard control.
         """
         index = len(self._planets)
-        name, orbital_radius, speed, size, planet_color = PLANET_DEFAULTS[index]
-        orbit = KeplerOrbit(semi_major_axis=orbital_radius, speed=speed)
+        name, orbital_radius, speed, size, planet_color, eccentricity = PLANET_DEFAULTS[index]
+        orbit  = KeplerOrbit(semi_major_axis=orbital_radius, eccentricity=eccentricity, speed=speed)
         planet = Planet(name=name, radius=size, color=planet_color, orbit=orbit)
         self.scene.add_body(planet)
         self._planets.append(planet)
