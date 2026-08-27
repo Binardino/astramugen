@@ -196,6 +196,22 @@ class SolarSystem:
 
 ---
 
+## Backlog — Unscheduled Ideas
+
+Ideas captured for later, not yet assigned to a version.
+
+- **Real eclipse prediction (solar + lunar).** Once a "real solar system" preset exists
+  (see the real/imaginary toggle deferred above), add a feature to compute and predict
+  actual past and future solar/lunar eclipses of the real Moon against real calendar
+  dates. This needs genuine ephemeris data/astronomical algorithms — not the stylized,
+  compressed orbits used for the visual simulation — so it would live in its own module
+  (e.g. `simulation/astronomy/eclipses.py`), decoupled from `KeplerOrbit`, and would take
+  a real date as input rather than sim time. Likely needs a proper astronomical library
+  (e.g. Skyfield) rather than hand-rolled Meeus-algorithm math. Only meaningful once the
+  "real solar system" mode exists — not before.
+
+---
+
 ## Dependencies
 
 - `ursina` — 3D engine + GUI
