@@ -50,3 +50,15 @@ def test_planet_offsets_moon_position_by_its_own_position():
     mx, my, mz = planet.moons[0].position
     local_r = math.sqrt((mx - px) ** 2 + (mz - pz) ** 2)
     assert abs(local_r - 1.5) < 1e-6
+
+
+def test_planet_with_no_moons_still_updates():
+    """A planet with an empty moons list (every planet today) must not break.
+
+    Regression guard: the moons-handling loop added to Planet.update()
+    must be a no-op when self.moons is [], not raise or change behavior.
+    """
+    orbit = KeplerOrbit(semi_major_axis=10.0, speed=1.0)
+    planet = Planet(name="Earth", radius=1.0, color=(0.2, 0.5, 1.0), orbit=orbit)
+    planet.update(1.0)
+    assert planet.moons == []
