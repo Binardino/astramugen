@@ -221,6 +221,16 @@ Ideas captured for later, not yet assigned to a version.
   radius/speed), stylized the same way `PLANET_DEFAULTS` already is — not real
   astronomical units.
 
+- **Per-planet ring systems (Saturn-style).** Not the same thing as the V3 asteroid
+  belt (that one orbits the star, between planets, like the real Mars-Jupiter belt) —
+  this is a flat ring/disc around an individual planet. Simulating it as thousands of
+  individual `CelestialBody` instances would be prohibitively expensive and pointless
+  visually; more realistic approach is a static stylized ring mesh (flat annulus/torus)
+  purely in `rendering/effects/` (e.g. `planet_rings.py`), with no `simulation/`
+  counterpart at all — same treatment as the background grid or starfield, which are
+  visual-only with nothing to simulate. Would need a per-planet toggle/option, likely
+  alongside the moon-count decision once that becomes dashboard-configurable.
+
 ---
 
 ## Dependencies
