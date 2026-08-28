@@ -39,9 +39,9 @@ def test_planet_offsets_moon_position_by_its_own_position():
     the planet itself ended up in world space.
     """
     planet_orbit = KeplerOrbit(semi_major_axis=10.0, speed=1.0)
-    planet = Planet(name="Earth", radius=1.0, color=(0.2, 0.5, 1.0), orbit=planet_orbit)
+    planet       = Planet(name="Earth", radius=1.0, color=(0.2, 0.5, 1.0), orbit=planet_orbit)
 
-    moon_orbit = KeplerOrbit(semi_major_axis=1.5, speed=2.0)
+    moon_orbit   = KeplerOrbit(semi_major_axis=1.5, speed=2.0)
     planet.moons.append(Moon(name="Luna", radius=0.3, color=(0.7, 0.7, 0.7), orbit=moon_orbit))
 
     planet.update(1.0)
