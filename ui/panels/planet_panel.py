@@ -4,6 +4,9 @@ from ursina import Slider, Text, color, destroy
 from simulation.bodies.planet import Planet
 from ui.panels.planet_defaults import PLANET_DEFAULTS
 from simulation.physics.kepler import KeplerOrbit
+from ui.panels.moon_defaults import MOON_DEFAULTS
+from simulation.bodies.moon import Moon
+
 class _PlanetRow:
     """One row of sliders controlling a single planet's orbit and size.
 
@@ -106,6 +109,13 @@ class PlanetPanel:
         name, orbital_radius, speed, size, planet_color, eccentricity = PLANET_DEFAULTS[index]
         orbit  = KeplerOrbit(semi_major_axis=orbital_radius, eccentricity=eccentricity, speed=speed)
         planet = Planet(name=name, radius=size, color=planet_color, orbit=orbit)
+
+        # Fixed, non-configurable moons (see MOON_DEFAULTS) — not exposed on
+        # the dashboard yet, per the V2 scope decision.
+        for moon_name, moon_size, moon_color, moon_radius, moon_speed in MOON_DEFAULTS.get(name, []):
+            moon_orbit = KeplerOrbit(semi_major_axis=moon_radius, speed=moon_speed)
+            planet.moons.append(Moon(name=moon_name, radius=moon_size, color=moon_color, orbit=moon_orbit))
+
         self.scene.add_body(planet)
         self._planets.append(planet)
         self._rows.append(_PlanetRow(planet, index))
