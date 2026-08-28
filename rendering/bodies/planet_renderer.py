@@ -14,6 +14,7 @@ Key Ursina notes:
 from __future__ import annotations
 from ursina import Entity, Vec3, color as ucolor
 from simulation.bodies.planet import Planet
+from rendering.effects.atmosphere import AtmosphereEffect
 
 
 class PlanetRenderer:
@@ -28,12 +29,14 @@ class PlanetRenderer:
             unlit=True,  # flat color, no lighting wash-out
             position=Vec3(*planet.position),
         )
+        self._atmosphere = AtmosphereEffect(planet.color, planet.radius)
 
     def sync(self) -> None:
         """Update entity to match current simulation state. Called each frame."""
         self.entity.position = Vec3(*self.planet.position)
         self.entity.color = self._to_color(self.planet.color)
         self.entity.scale = self.planet.radius
+        self._atmosphere.sync(self.planet.position, self.planet.radius)
 
     @staticmethod
     def _to_color(rgb: tuple[float, float, float]) -> ucolor.Color:
