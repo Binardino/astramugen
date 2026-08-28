@@ -231,6 +231,18 @@ Ideas captured for later, not yet assigned to a version.
   visual-only with nothing to simulate. Would need a per-planet toggle/option, likely
   alongside the moon-count decision once that becomes dashboard-configurable.
 
+- **Separate atmosphere color from surface color.** `AtmosphereEffect` currently tints
+  each planet's halo with `planet.color` — the same value used for the body's own
+  surface. That's a deliberate V2 stylistic simplification, not physically accurate: in
+  reality a halo's color comes from Rayleigh scattering in the atmosphere's gas
+  composition, independent of surface color for rocky planets (Earth's blue rim isn't
+  "caused by" its blue oceans; Venus's pale haze looks nothing like whatever is under its
+  permanent cloud cover). It happens to be more defensible for gas giants, which have no
+  real surface/atmosphere distinction at all. Real fix: add a separate
+  `atmosphere_color` field to `Planet`, distinct from `color`, defaulting to `color` for
+  gas giants and something independent for rocky planets. An artistic choice, not a bug —
+  revisit whenever atmosphere fidelity matters more than it does for V2.
+
 ---
 
 ## Dependencies
