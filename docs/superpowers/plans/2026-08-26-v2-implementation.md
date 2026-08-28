@@ -41,7 +41,7 @@ needs no changes at all.
 The existing 5 circular-orbit tests must keep passing unchanged — `eccentricity` defaults
 to `0.0`, and the solver must reduce to `E = M` exactly in that case.
 
-- [ ] **Step 1: Write the failing tests (append to the existing file)**
+- [x] **Step 1: Write the failing tests (append to the existing file)**
 
 ```python
 # tests/simulation/physics/test_kepler.py — add these
@@ -88,7 +88,7 @@ def test_zero_eccentricity_matches_circular_behavior():
     assert abs(z - 5.0) < 1e-9
 ```
 
-- [ ] **Step 2: Run to confirm failure**
+- [x] **Step 2: Run to confirm failure**
 
 ```bash
 uv run pytest tests/simulation/physics/test_kepler.py -v
@@ -96,7 +96,7 @@ uv run pytest tests/simulation/physics/test_kepler.py -v
 
 Expected: the 5 new tests fail (missing `eccentricity` argument), the 5 old tests still pass.
 
-- [ ] **Step 3: Implement the eccentric anomaly solver + elliptical position**
+- [x] **Step 3: Implement the eccentric anomaly solver + elliptical position**
 
 ```python
 # simulation/physics/kepler.py
@@ -160,7 +160,7 @@ class KeplerOrbit:
         return (x, y, z)
 ```
 
-- [ ] **Step 4: Run all kepler tests**
+- [x] **Step 4: Run all kepler tests**
 
 ```bash
 uv run pytest tests/simulation/physics/test_kepler.py -v
@@ -168,7 +168,7 @@ uv run pytest tests/simulation/physics/test_kepler.py -v
 
 Expected: 10 passed (5 old + 5 new).
 
-- [ ] **Step 5: Run the full suite to catch any regression in Planet/System tests**
+- [x] **Step 5: Run the full suite to catch any regression in Planet/System tests**
 
 ```bash
 uv run pytest tests/ -v
@@ -176,7 +176,7 @@ uv run pytest tests/ -v
 
 Expected: all passed — `Planet`/`SolarSystem` tests only use `eccentricity`'s default (0.0).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add simulation/physics/kepler.py tests/simulation/physics/test_kepler.py
@@ -195,7 +195,7 @@ ellipse's geometric center) at the local origin, using the same perifocal formul
 solve Kepler's equation just to draw the static shape — uniform `E` sampling traces the
 correct ellipse regardless of how a body's *speed* varies along it).
 
-- [ ] **Step 1: Update `OrbitLine` to take `eccentricity` and draw an ellipse**
+- [x] **Step 1: Update `OrbitLine` to take `eccentricity` and draw an ellipse**
 
 ```python
 # rendering/effects/orbit_line.py
@@ -248,7 +248,7 @@ class OrbitLine:
         self.entity.position = Vec3(*position)
 ```
 
-- [ ] **Step 2: Run and verify visually**
+- [x] **Step 2: Run and verify visually**
 
 ```bash
 uv run python main.py
@@ -257,7 +257,7 @@ uv run python main.py
 Expected: orbit lines are now visibly elongated ellipses once a planet's eccentricity is
 non-zero (still circular for e=0, since existing planets don't set eccentricity yet).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add rendering/effects/orbit_line.py
@@ -276,7 +276,7 @@ is the one that knows about the parent relationship — it calls `moon.update(dt
 translates the moon's local position into world space by adding its own position. This
 keeps `CelestialBody.update(dt)`'s single-argument signature intact for every body type.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 ```python
 # tests/simulation/bodies/test_moon.py
@@ -319,7 +319,7 @@ def test_planet_with_no_moons_still_updates():
     assert planet.moons == []
 ```
 
-- [ ] **Step 2: Run to confirm failure**
+- [x] **Step 2: Run to confirm failure**
 
 ```bash
 uv run pytest tests/simulation/bodies/test_moon.py -v
@@ -327,7 +327,7 @@ uv run pytest tests/simulation/bodies/test_moon.py -v
 
 Expected: `ImportError` / `AttributeError` — `Moon` is empty, `Planet` has no `moons` field.
 
-- [ ] **Step 3: Implement Moon**
+- [x] **Step 3: Implement Moon**
 
 ```python
 # simulation/bodies/moon.py
@@ -360,7 +360,7 @@ class Moon(CelestialBody):
         self.position = self.orbit.position_at(self.orbit.time)
 ```
 
-- [ ] **Step 4: Extend Planet with a moons list**
+- [x] **Step 4: Extend Planet with a moons list**
 
 ```python
 # simulation/bodies/planet.py
@@ -389,7 +389,7 @@ class Planet(CelestialBody):
             moon.position = tuple(p + m for p, m in zip(self.position, moon.position))
 ```
 
-- [ ] **Step 5: Run tests**
+- [x] **Step 5: Run tests**
 
 ```bash
 uv run pytest tests/simulation/bodies/test_moon.py tests/simulation/bodies/test_planet.py -v
@@ -397,7 +397,7 @@ uv run pytest tests/simulation/bodies/test_moon.py tests/simulation/bodies/test_
 
 Expected: all passed — existing Planet tests still pass since `moons` defaults to `[]`.
 
-- [ ] **Step 6: Run the full suite**
+- [x] **Step 6: Run the full suite**
 
 ```bash
 uv run pytest tests/ -v
@@ -405,7 +405,7 @@ uv run pytest tests/ -v
 
 Expected: all passed.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add simulation/bodies/moon.py simulation/bodies/planet.py tests/simulation/bodies/test_moon.py
@@ -420,7 +420,7 @@ git commit -m "feat: Moon orbiting its parent Planet in local space"
 
 No pytest — verify visually.
 
-- [ ] **Step 1: Implement MoonRenderer (same pattern as PlanetRenderer)**
+- [x] **Step 1: Implement MoonRenderer (same pattern as PlanetRenderer)**
 
 ```python
 # rendering/bodies/moon_renderer.py
@@ -448,7 +448,7 @@ class MoonRenderer:
         self.entity.scale    = self.moon.radius
 ```
 
-- [ ] **Step 2: Wire moons into Scene — register, sync, and destroy recursively**
+- [x] **Step 2: Wire moons into Scene — register, sync, and destroy recursively**
 
 ```python
 # rendering/scene.py — extend _register, sync, and remove_body
@@ -481,12 +481,12 @@ if isinstance(body, Planet):
 Adapt exact placement to the current file structure — the snippets above show the three
 insertion points, not a full file rewrite.
 
-- [ ] **Step 3: Give at least one PLANET_DEFAULTS entry moons, to see them**
+- [x] **Step 3: Give at least one PLANET_DEFAULTS entry moons, to see them**
 
 Temporarily (or permanently, your call) attach 1–2 `Moon` instances to a `Planet` in
 `PlanetPanel._add_planet` for testing, e.g. give Earth one moon and Jupiter two.
 
-- [ ] **Step 4: Run and verify visually**
+- [x] **Step 4: Run and verify visually**
 
 ```bash
 uv run python main.py
@@ -495,7 +495,7 @@ uv run python main.py
 Expected: small spheres orbiting a planet, with their own faint orbit ellipse that moves
 together with the planet as it orbits the star.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add rendering/bodies/moon_renderer.py rendering/scene.py ui/panels/planet_panel.py
@@ -511,7 +511,7 @@ git commit -m "feat: render moons and wire them into Scene"
 No pytest — verify visually. Reuses the fake-bloom technique already validated on the star,
 but as a single, subtler layer.
 
-- [ ] **Step 1: Implement AtmosphereEffect**
+- [x] **Step 1: Implement AtmosphereEffect**
 
 ```python
 # rendering/effects/atmosphere.py
@@ -542,7 +542,7 @@ class AtmosphereEffect:
         self.entity.scale    = radius * 1.3
 ```
 
-- [ ] **Step 2: Attach it in PlanetRenderer**
+- [x] **Step 2: Attach it in PlanetRenderer**
 
 ```python
 # rendering/bodies/planet_renderer.py — add to __init__ and sync()
@@ -555,7 +555,7 @@ self._atmosphere = AtmosphereEffect(planet.color, planet.radius)
 self._atmosphere.sync(self.planet.position, self.planet.radius)
 ```
 
-- [ ] **Step 3: Run and verify visually**
+- [x] **Step 3: Run and verify visually**
 
 ```bash
 uv run python main.py
@@ -563,7 +563,7 @@ uv run python main.py
 
 Expected: each planet has a faint tinted halo, more subtle than the star's.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add rendering/effects/atmosphere.py rendering/bodies/planet_renderer.py
@@ -654,6 +654,6 @@ git commit --allow-empty -m "feat: V2 complete — elliptical orbits, moons, atm
 - [x] Elliptical orbits (true Kepler equation) — Task 1
 - [x] Moons (fixed 0–2 per planet) — Task 3, 4
 - [x] Atmosphere/halo on planets — Task 5
-- [x] Basic procedural generation (Randomize button) — Task 6
+- [ ] Basic procedural generation (Randomize button) — Task 6
 - [ ] Deferred: per-planet moon count slider, real/imaginary system toggle, dedicated
       generator module — documented in the spec as follow-up work, not V2 scope.
